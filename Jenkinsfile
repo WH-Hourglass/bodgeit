@@ -19,7 +19,7 @@ pipeline {
 
         stage('🔨 Build ') {
             steps {
-               sh 'ant build''
+               sh 'ant build'
             }
         }
         
