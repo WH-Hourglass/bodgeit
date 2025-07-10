@@ -17,9 +17,9 @@ pipeline {
         
  
 
-        stage('🔨 Build JAR') {
+        stage('🔨 Build ') {
             steps {
-                sh 'components/scripts/Build_JAR.sh'
+               sh 'ant build''
             }
         }
         
