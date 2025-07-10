@@ -6,6 +6,9 @@
 FROM tomcat:9.0
 MAINTAINER Simon Bennetts "psiinon@gmail.com"
 
-RUN curl -s -L https://github.com/psiinon/bodgeit/releases/download/1.4.0/bodgeit.war > bodgeit.war && \
-	mv bodgeit.war /usr/local/tomcat/webapps
+COPY bodgeit.war /usr/local/tomcat/webapps/bodgeit.war
+
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]
 
