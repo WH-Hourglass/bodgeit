@@ -6,13 +6,13 @@ set -e
 CONTAINER_NAME="${CONTAINER_NAME:-webgoat}"
 BUILD_NUMBER="${BUILD_NUMBER:-1}"
 REGION="${REGION:-ap-northeast-2}"
-ECR_REPO="${DYNAMIC_IMAGE_TAG}
+ECR_REPO="${DYNAMIC_IMAGE_TAG}"
 ZAP_SCRIPT="${ZAP_SCRIPT:-zap_webgoat.sh}"
 S3_BUCKET_DAST=testdast
 
 # 동적 변수 설정
 containerName="${CONTAINER_NAME}-${BUILD_NUMBER}"
-containerFile="container_name_${BUILD_NUMBER}.txt"
+containerFile="${CONTAINER_NAME}_${BUILD_NUMBER}.txt"
 zapJson="zap_test_${BUILD_NUMBER}.json"
 port=$((8080 + (BUILD_NUMBER % 1000)))
 timestamp=$(date +"%Y%m%d_%H%M%S")
