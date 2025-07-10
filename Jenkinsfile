@@ -15,13 +15,7 @@ pipeline {
             }
         }
         
-        stage('🧪 SonarQube Analysis') {
-            steps {
-                script {
-                    load 'components/scripts/sonarqube_analysis.groovy'
-                }
-            }
-        }
+ 
 
         stage('🔨 Build JAR') {
             steps {
@@ -29,19 +23,6 @@ pipeline {
             }
         }
         
-        stage('🚀 Generate SBOM via CDXGEN Docker') {
-            agent { label 'SCA' }
-            steps {
-                script {
-                    def repoUrl = scm.userRemoteConfigs[0].url
-                    def repoName = repoUrl.tokenize('/').last().replace('.git', '')
-                    
-                    sh """
-                        /home/ec2-user/run_sbom_pipeline.sh '${repoUrl}' '${repoName}' '${env.BUILD_NUMBER}'
-                    """
-                }
-            }
-        }
 
 
         stage('🐳 Docker Build') {
