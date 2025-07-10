@@ -6,7 +6,7 @@ set -e
 CONTAINER_NAME="${CONTAINER_NAME:-webgoat}"
 BUILD_NUMBER="${BUILD_NUMBER:-1}"
 REGION="${REGION:-ap-northeast-2}"
-ECR_REPO="${ECR_REPO}"
+ECR_REPO="${DYNAMIC_IMAGE_TAG}
 ZAP_SCRIPT="${ZAP_SCRIPT:-zap_webgoat.sh}"
 S3_BUCKET_DAST=testdast
 
