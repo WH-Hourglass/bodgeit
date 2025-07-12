@@ -9,7 +9,7 @@ REGION="${REGION:-ap-northeast-2}"
 ECR_REPO="${ECR_REPO}"
 ZAP_SCRIPT="${ZAP_SCRIPT:-zap_webgoat.sh}"
 S3_BUCKET_DAST=testdast
-IMAGE_TAG="${DYNAMIC_IMAGE_TAG}"
+DYNAMIC_IMAGE_TAG="${DYNAMIC_IMAGE_TAG}"
 # 동적 변수 설정
 containerName="${CONTAINER_NAME}-${BUILD_NUMBER}"
 containerFile="${CONTAINER_NAME}_${BUILD_NUMBER}.txt"
@@ -26,7 +26,7 @@ aws ecr get-login-password --region "$REGION" | docker login --username AWS --pa
 docker pull "$ECR_REPO:${IMAGE_TAG}"
 
 echo "[*] 컨테이너 실행 중..."
-docker run -d --name "$containerName" -p "${port}:8080" "$ECR_REPO:${IMAGE_TAG}"
+docker run -d --name "$containerName" -p "${port}:8080" "$ECR_REPO:$DYNAMIC_IMAGE_TAG"
 
 echo "[*] Health check..."
 for j in {1..15}; do
