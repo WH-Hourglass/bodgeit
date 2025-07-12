@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./dot.env
+source components/dot.env
 
 # 기본값
 CONTAINER_NAME="${BUILD_TAG}"
