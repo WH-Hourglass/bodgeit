@@ -46,7 +46,7 @@ pipeline {
         stage('🔍 ZAP 스캔 및 SecurityHub 전송') {
             agent { label 'DAST' }
             steps {
-                nohup bash -c "DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} components/scripts/DAST_Zap_Scan.sh" > zap_bg.log 2>&1 &
+                nohup env DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} components/scripts/DAST_Zap_Scan.sh > zap_bg.log 2>&1 &
                 //sh '''bash -c "DYNAMIC_IMAGE_TAG=$DYNAMIC_IMAGE_TAG components/scripts/DAST_Zap_Scan.sh /bodgeit"'''
             }
         }
