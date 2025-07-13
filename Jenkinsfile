@@ -54,8 +54,7 @@ pipeline {
                     '''
 
                 sh '''tmux new-session -d -s "dast-${BUILD_NUMBER}" \
-                -c "${WORKSPACE}" \  
-                    env DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} components/scripts/DAST_Zap_Scan.sh"'''
+                -c "${WORKSPACE}" env DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} components/scripts/DAST_Zap_Scan.sh"'''
                 //sh '''bash -c "DYNAMIC_IMAGE_TAG=$DYNAMIC_IMAGE_TAG components/scripts/DAST_Zap_Scan.sh /bodgeit"'''
             }
         }
