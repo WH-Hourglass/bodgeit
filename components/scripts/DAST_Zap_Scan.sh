@@ -78,7 +78,6 @@ echo "[*] ZAP 데몬: zap.sh (포트 $zap_port)"
 
 
 echo "[*] 웹앱 컨테이너 실행"
-aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$ECR_REPO"
 docker pull "$ECR_REPO:${DYNAMIC_IMAGE_TAG}"
 docker run -d --name "$containerName" -p "${port}:8080" "$ECR_REPO:${DYNAMIC_IMAGE_TAG}"
 
