@@ -7,7 +7,7 @@ IMAGE_TAG="${DYNAMIC_IMAGE_TAG}"
 ZAP_SCRIPT="${ZAP_SCRIPT:-zap_scan.sh}"
 ZAP_BIN="${ZAP_BIN:-$HOME/zap/zap.sh}" # zap.sh 실행 경로
 startpage="${1:-}"
-
+echo "🔧 ECR_REPO: $ECR_REPO"
 echo "DEBUG: 변수 설정 완료"
 
 for try_port in {8081..8089}; do
