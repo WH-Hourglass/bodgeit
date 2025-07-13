@@ -53,7 +53,7 @@ pipeline {
                       aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$ECR_REPO"
                     '''
 
-                sh'setsid env DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} components/scripts/DAST_Zap_Scan.sh > zap_bg.log 2>&1 &'
+                sh'JENKINS_NODE_COOKIE=dontKillMe nohup env DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} ./zap_bg.sh > zap_bg_${BUILD_NUMBER}.log 2>&1 &'
                 //sh '''bash -c "DYNAMIC_IMAGE_TAG=$DYNAMIC_IMAGE_TAG components/scripts/DAST_Zap_Scan.sh /bodgeit"'''
             }
         }
