@@ -53,8 +53,7 @@ pipeline {
                       aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$ECR_REPO"
                     '''
 
-                sh '''tmux new-session -d -s "dast-${BUILD_NUMBER}" \
-                -c "${WORKSPACE}" "env DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} components/scripts/DAST_Zap_Scan.sh > zap_bg.log 2>&1"'''
+                sh'setsid env DYNAMIC_IMAGE_TAG=${DYNAMIC_IMAGE_TAG} components/scripts/DAST_Zap_Scan.sh > zap_bg.log 2>&1 &'
                 //sh '''bash -c "DYNAMIC_IMAGE_TAG=$DYNAMIC_IMAGE_TAG components/scripts/DAST_Zap_Scan.sh /bodgeit"'''
             }
         }
