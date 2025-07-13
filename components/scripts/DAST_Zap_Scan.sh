@@ -4,8 +4,9 @@
 set -e
 set -o pipefail
 
-# 작업 디렉터리 고정 (nohup 실행 시 중요)
-cd "$(dirname "$0")"
+# 작업 디렉터리를 Jenkins workspace로 설정
+WORKSPACE_DIR="/home/ec2-user/jenkins-agent/workspace/DAST_Test"
+cd "$WORKSPACE_DIR"
 
 # 로그 파일 설정 (nohup.out 대신 명시적 로그)
 LOG_FILE="zap_bg_$(date +%Y%m%d_%H%M%S).log"
@@ -16,7 +17,22 @@ echo "🚀 스크립트 시작: $(date)"
 echo "📁 작업 디렉터리: $(pwd)"
 echo "📝 로그 파일: $LOG_FILE"
 
-source components/dot.env
+# dot.env 파일 위치 확인 및 로드
+if [ -f "components/dot.env" ]; then
+    source components/dot.env
+    echo "✅ dot.env 로드 완료"
+elif [ -f "dot.env" ]; then
+    source dot.env
+    echo "✅ dot.env 로드 완료 (루트에서)"
+else
+    echo "🚨 Error: dot.env 파일을 찾을 수 없습니다"
+    echo "현재 디렉터리: $(pwd)"
+    echo "파일 목록:"
+    ls -la
+    echo "components 디렉터리:"
+    ls -la components/ 2>/dev/null || echo "components 디렉터리가 없습니다"
+    exit 1
+fi
 
 # 기본값
 CONTAINER_NAME="${BUILD_TAG}"
