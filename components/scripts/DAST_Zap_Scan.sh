@@ -105,14 +105,16 @@ echo "[*] ZAP 스크립트 실행 ($ZAP_SCRIPT)"
 chmod +x ~/"$ZAP_SCRIPT"
 ~/"$ZAP_SCRIPT" "$containerName" "$zap_port" "$startpage" "$port" # $port인자 추가
 
-if [ ! -f ~/zap_test.json ]; then
+if [ ! -f ~/zap_${CONTAINER_NAME}.json ]; then
   echo "❌ ZAP 결과 파일이 존재하지 않습니다."
   exit 1
 fi
-
-echo "[*] 결과 파일 저장"
-cp ~/zap_test.json "$zapJson"
-cp "$zapJson" zap_test.json
+echo "[*] S3 업로드"
+if aws s3 cp zap_${CONTAINER_NAME}.json "s3://${S3_BUCKET}/${s3_key}" --region "$REGION"; then
+  echo "✅ S3 업로드 완료 → s3://${S3_BUCKET}/${s3_key}"
+else
+  echo "⚠️ S3 업로드 실패 (무시)"
+fi
 
 echo "[*] 정리 중..."
 docker rm -f "$containerName" 2>/dev/null && echo "🧹 웹앱 컨테이너 제거 완료" || echo "⚠️ 웹앱 컨테이너 제거 실패"
@@ -123,10 +125,8 @@ if [ -f "$zap_pidfile" ]; then
   sleep 2
 fi
 
-# 위에서 만든 zap 데몬 병렬처리용 전용 db 삭제하는 명령어들인데 
-# 지금 코드에서는 zap_workdir_${zap_port}로 만들어져서 폴더 갯수 관리하려고 제거하는 코드를 추가한건데
-# cicd에 적용할때는 zap_workdir_${빌드번호} 형식으로 수정하고 폴더 지우는 코드는 제거하는게 좋을듯
-# 해당 폴더에 zap 데몬 로그가 남아서 안지우는게 좋을듯
+
 if [ -d "$HOME/zap/zap_workdir_${zap_port}" ]; then
   rm -rf "$HOME/zap/zap_workdir_${zap_port}" && echo "🧹 ZAP 작업 디렉터리 제거 완료" || echo "⚠️ ZAP 작업 디렉터리 제거 실패"
 fi
+mv "$REPORT_JSON" /report/
