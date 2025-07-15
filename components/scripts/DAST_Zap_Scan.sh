@@ -105,15 +105,33 @@ echo "[*] ZAP 스크립트 실행 ($ZAP_SCRIPT)"
 chmod +x ~/"$ZAP_SCRIPT"
 ~/"$ZAP_SCRIPT" "$containerName" "$zap_port" "$startpage" "$port" # $port인자 추가
 
-if [ ! -f ~/zap_${CONTAINER_NAME}.json ]; then
-  echo "❌ ZAP 결과 파일이 존재하지 않습니다."
-  exit 1
+
+# ZAP 스크립트가 실제로 생성하는 파일명
+ZAP_RESULT_FILE="$HOME/zap_${containerName}.json"
+
+# 파일 존재 확인
+if [ ! -f "$ZAP_RESULT_FILE" ]; then
+    echo "❌ ZAP 결과 파일이 존재하지 않습니다: $ZAP_RESULT_FILE"
+    echo "현재 홈 디렉터리의 ZAP 관련 파일들:"
+    ls -la ~/zap_* 2>/dev/null || echo "ZAP 파일 없음"
+    exit 1
 fi
+
+echo "[+] ZAP 결과 파일 확인: $ZAP_RESULT_FILE"
+
 echo "[*] S3 업로드"
-if aws s3 cp zap_${CONTAINER_NAME}.json "s3://${S3_BUCKET}/${s3_key}" --region "$REGION"; then
-  echo "✅ S3 업로드 완료 → s3://${S3_BUCKET}/${s3_key}"
+if aws s3 cp "$ZAP_RESULT_FILE" "s3://${S3_BUCKET_DAST}/${s3_key}" --region "$REGION"; then
+    echo "✅ S3 업로드 완료 → s3://${S3_BUCKET_DAST}/${s3_key}"
 else
-  echo "⚠️ S3 업로드 실패 (무시)"
+    echo "⚠️ S3 업로드 실패 (무시)"
+fi
+REPORT_DIR="$HOME/report"
+echo "[*] 리포트 파일을 /report로 이동"
+if [ -f "$ZAP_RESULT_FILE" ]; then
+    mv "$ZAP_RESULT_FILE" "$REPORT_DIR/$(basename "$ZAP_RESULT_FILE")"
+    echo "✅ 파일 이동 완료: $REPORT_DIR/$(basename "$ZAP_RESULT_FILE")"
+else
+    echo "⚠️ 이동할 파일이 없습니다"
 fi
 
 echo "[*] 정리 중..."
@@ -129,4 +147,3 @@ fi
 if [ -d "$HOME/zap/zap_workdir_${zap_port}" ]; then
   rm -rf "$HOME/zap/zap_workdir_${zap_port}" && echo "🧹 ZAP 작업 디렉터리 제거 완료" || echo "⚠️ ZAP 작업 디렉터리 제거 실패"
 fi
-mv "$REPORT_JSON" /report/
