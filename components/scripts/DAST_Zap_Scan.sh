@@ -7,7 +7,7 @@ ZAP_BIN="${ZAP_BIN:-$HOME/zap/zap.sh}" # zap.sh 실행 경로
 startpage="${1:-}"
 S3_BUCKET_DAST=${S3_BUCKET_DAST:-testdast)
 # 체크아웃된 저장소에서 ZAP 스크립트 경로 설정
-ZAP_SCRIPT_PATH="${WORKSPACE}/components/scripts/${ZAP_SCRIPT}"
+ZAP_SCRIPT_PATH="${WORKSPACE}/DAST_Test/components/scripts/${ZAP_SCRIPT}"
 
 echo "🔧 ECR_REPO: $ECR_REPO"
 echo "DEBUG: 변수 설정 완료"
