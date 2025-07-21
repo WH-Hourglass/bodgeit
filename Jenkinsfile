@@ -57,6 +57,7 @@ pipeline {
                 sh '''bash -c "DYNAMIC_IMAGE_TAG=$DYNAMIC_IMAGE_TAG components/scripts/DAST_Zap_Scan.sh /bodgeit"'''
             }
         }
+    }
 
     post {
         success {
