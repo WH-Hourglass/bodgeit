@@ -102,7 +102,7 @@ zap_pidfile="zap_${zap_port}.pid"
 zap_log="zap_${zap_port}.log"
 zapJson="zap_test_${BUILD_TAG}.json"
 timestamp=$(date +"%Y%m%d_%H%M%S")
-echo "${WORKSPACE}/components/scripts/${ZAP_SCRIPT"
+echo "${WORKSPACE}/components/scripts/${ZAP_SCRIPT}"
 # 체크아웃된 저장소의 ZAP 스크립트 확인 및 실행 권한 부여
 echo "[*] ZAP 스크립트 경로 확인: $ZAP_SCRIPT_PATH"
 if [ -f "$ZAP_SCRIPT_PATH" ]; then
