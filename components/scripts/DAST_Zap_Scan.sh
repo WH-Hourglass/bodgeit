@@ -2,7 +2,7 @@
 # 기본값
 CONTAINER_NAME="${BUILD_TAG}"
 IMAGE_TAG="${DYNAMIC_IMAGE_TAG}"
-ZAP_SCRIPT="${ZAP_SCRIPT:-zap_scan.sh}"
+ZAP_SCRIPT="zap_scan.sh"
 ZAP_BIN="${ZAP_BIN:-$HOME/zap/zap.sh}" # zap.sh 실행 경로
 startpage="${1:-}"
 S3_BUCKET_DAST=${S3_BUCKET_DAST:-testdast)
