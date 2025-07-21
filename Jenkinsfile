@@ -55,9 +55,6 @@ pipeline {
             agent { label 'DAST' }
             steps {
                 sh '''
-                        set -a
-                    source components/dot.env
-                      set +a
                       aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$ECR_REPO"
                     '''
 
