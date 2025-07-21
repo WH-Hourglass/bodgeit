@@ -2,10 +2,11 @@
 # 기본값
 CONTAINER_NAME="${BUILD_TAG}"
 IMAGE_TAG="${DYNAMIC_IMAGE_TAG}"
-ZAP_SCRIPT="zap_scan.sh"
+ZAP_SCRIPT="${ZAP_SCRIPT:-zap_scan.sh}"
 ZAP_BIN="${ZAP_BIN:-$HOME/zap/zap.sh}" # zap.sh 실행 경로
 startpage="${1:-}"
-S3_BUCKET_DAST=${S3_BUCKET_DAST:-testdast)
+S3_BUCKET_DAST=${S3_BUCKET_DAST:-testdast}
+
 # 체크아웃된 저장소에서 ZAP 스크립트 경로 설정
 ZAP_SCRIPT_PATH="${WORKSPACE}/components/scripts/${ZAP_SCRIPT}"
 echo "🔧 ECR_REPO: $ECR_REPO"
@@ -102,7 +103,7 @@ zap_pidfile="zap_${zap_port}.pid"
 zap_log="zap_${zap_port}.log"
 zapJson="zap_test_${BUILD_TAG}.json"
 timestamp=$(date +"%Y%m%d_%H%M%S")
-echo "${WORKSPACE}/components/scripts/${ZAP_SCRIPT}"
+
 # 체크아웃된 저장소의 ZAP 스크립트 확인 및 실행 권한 부여
 echo "[*] ZAP 스크립트 경로 확인: $ZAP_SCRIPT_PATH"
 if [ -f "$ZAP_SCRIPT_PATH" ]; then
